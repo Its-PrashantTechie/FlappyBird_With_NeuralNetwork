@@ -3,18 +3,46 @@ package game;
 import java.awt.*;
 
 public class Bird {
-    public static int x = 100;
-    public static int y = 250;
-    public static int size = 35;
-    public static double velocity = 0;
-    public static double gravity = 0.5;
-    public static double lift = -8;
 
-    // Animation
-    private static int wingFlapFrame = 0;
-    private static int wingFlapDirection = 1;
+    public static final int DEFAULT_SIZE = 35;
 
-    public static void update() {
+    public int x;
+    public int y;
+    public int size;
+    public double velocity;
+
+    public double gravity = 0.5;
+    public double lift = -8;
+
+    public boolean alive = true;
+
+    // Animation (per bird)
+    private int wingFlapFrame = 0;
+    private int wingFlapDirection = 1;
+
+    public Bird(int x, int y, int size) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.velocity = 0;
+    }
+
+    public Bird(int x, int y) {
+        this(x, y, DEFAULT_SIZE);
+    }
+
+    public void reset(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.velocity = 0;
+        this.alive = true;
+        this.wingFlapFrame = 0;
+        this.wingFlapDirection = 1;
+    }
+
+    public void update() {
+        if (!alive) return;
+
         velocity += gravity;
         y += velocity;
 
@@ -31,11 +59,16 @@ public class Bird {
         }
     }
 
-    public static void jump() {
+    public void jump() {
+        if (!alive) return;
         velocity = lift;
     }
 
-    public static void draw(Graphics g) {
+    public void kill() {
+        alive = false;
+    }
+
+    public void draw(Graphics g, boolean highlight) {
         Graphics2D g2 = (Graphics2D) g;
 
         // smooth edges
@@ -44,7 +77,11 @@ public class Bird {
         int wingY = y + 15 + wingFlapFrame;
 
         // Body
-        g2.setColor(new Color(255, 215, 0)); // golden yellow
+        if (highlight) {
+            g2.setColor(new Color(255, 120, 0)); // more orange for best bird
+        } else {
+            g2.setColor(new Color(255, 215, 0)); // golden yellow
+        }
         g2.fillOval(x, y, size, size);
 
         // Belly
