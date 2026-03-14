@@ -10,6 +10,8 @@ public class AIBird {
 
     public double fitness;
     public boolean alive = true;
+    public int pipesPassed = 0;
+    public int lastPassedPipeX = -1;
 
     public AIBird(NeuralNetwork brain, int startX, int startY) {
         this.brain = brain;
@@ -22,6 +24,8 @@ public class AIBird {
         bird.reset(startX, startY);
         fitness = 0.0;
         alive = true;
+        pipesPassed = 0;
+        lastPassedPipeX = -1;
     }
 
     /**
@@ -41,22 +45,27 @@ public class AIBird {
         }
 
         double gapCenterY = next.topHeight + next.gap / 2.0;
+        double distanceToPipe = next.x - bird.x;
+        double distanceToGap = gapCenterY - bird.y;
 
         double[] input = new double[]{
-                bird.y / (double) Constants.HEIGHT,
-                bird.velocity / 10.0,
-                (next.x - bird.x) / (double) Constants.WIDTH,
-                next.topHeight / (double) Constants.HEIGHT,
-                gapCenterY / (double) Constants.HEIGHT
+                bird.y / (double) Constants.HEIGHT,           // bird height
+                bird.velocity / 15.0,                          // bird velocity (normalized)
+                distanceToPipe / (double) Constants.WIDTH,    // distance to next pipe
+                next.topHeight / (double) Constants.HEIGHT,   // top pipe height
+                gapCenterY / (double) Constants.HEIGHT,       // gap center height
+                distanceToGap / (double) Constants.HEIGHT     // vertical distance to gap
         };
 
         double jumpProb = brain.forward(input);
-        if (jumpProb > 0.5) {
+        if (jumpProb > 0.3) { // Lower threshold for more aggressive jumping
             bird.jump();
         }
 
         bird.update();
         fitness += 1.0;
+        
+        // Remove duplicate pipe counting - handled in GamePanel.updateAIScores()
     }
 
     public void kill() {

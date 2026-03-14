@@ -20,9 +20,42 @@ public class Pipe {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.green);
+        // Main pipe color (light grey)
+        g.setColor(new Color(160, 160, 160)); // Light grey
+        
+        // Draw top pipe
         g.fillRect(x, 0, pipeWidth, topHeight);
-        g.fillRect(x, topHeight + gap, pipeWidth, Constants.HEIGHT - (topHeight + gap));
+        
+        // Draw bottom pipe (from gap to ground)
+        int groundHeight = 50;
+        int bottomPipeY = topHeight + gap;
+        int bottomPipeHeight = Constants.HEIGHT - groundHeight - bottomPipeY;
+        
+        // Only draw bottom pipe if it has positive height
+        if (bottomPipeHeight > 0) {
+            g.fillRect(x, bottomPipeY, pipeWidth, bottomPipeHeight);
+        }
+        
+        // Pipe caps (darker, wider)
+        g.setColor(new Color(120, 120, 120)); // Darker grey
+        int capWidth = pipeWidth + 10;
+        int capHeight = 30;
+        int capX = x - 5;
+        
+        // Top pipe cap
+        g.fillRect(capX, topHeight - capHeight, capWidth, capHeight);
+        
+        // Bottom pipe cap (only if bottom pipe exists)
+        if (bottomPipeHeight > 0) {
+            g.fillRect(capX, bottomPipeY, capWidth, capHeight);
+        }
+        
+        // Add some shading/highlight for 3D effect
+        g.setColor(new Color(180, 180, 180)); // Lighter grey
+        g.fillRect(x + 5, 0, 5, topHeight);
+        if (bottomPipeHeight > 0) {
+            g.fillRect(x + 5, bottomPipeY, 5, bottomPipeHeight);
+        }
     }
 }
 

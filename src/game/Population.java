@@ -35,7 +35,7 @@ public class Population {
 
     public void evolve() {
         Arrays.sort(genomes, Comparator.comparingDouble(g -> -g.fitness));
-        int elite = Math.max(1, size / 5); // keep top 20%
+        int elite = Math.max(1, size / 10); // keep top 10% for more aggressive selection
 
         Genome[] next = new Genome[size];
         for (int i = 0; i < elite; i++) {
@@ -44,7 +44,7 @@ public class Population {
 
         for (int i = elite; i < size; i++) {
             Genome parent = genomes[rand.nextInt(elite)].copy();
-            parent.brain.mutate(0.1, 0.2);
+            parent.brain.mutate(0.2, 0.3); // Higher mutation rate and magnitude
             parent.fitness = 0.0;
             next[i] = parent;
         }

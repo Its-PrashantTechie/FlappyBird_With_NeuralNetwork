@@ -4,12 +4,12 @@ import java.util.Random;
 
 /**
  * Simple feed-forward neural network used as the "brain" for the AI bird.
- * Architecture: 5 inputs -> 6 hidden units -> 1 output (jump probability).
+ * Architecture: 6 inputs -> 8 hidden units -> 1 output (jump probability).
  */
 public class NeuralNetwork {
 
-    private static final int INPUTS = 5;
-    private static final int HIDDEN = 6;
+    private static final int INPUTS = 6;
+    private static final int HIDDEN = 8;
 
     double[][] w1 = new double[HIDDEN][INPUTS];
     double[] b1 = new double[HIDDEN];
@@ -19,6 +19,11 @@ public class NeuralNetwork {
     private static final Random rand = new Random();
 
     public NeuralNetwork() {
+        // Initialize weights and biases separately to avoid constructor call issues
+        w1 = new double[HIDDEN][INPUTS];
+        b1 = new double[HIDDEN];
+        w2 = new double[HIDDEN];
+        b2 = 0;
         randomize();
     }
 

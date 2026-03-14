@@ -16,10 +16,12 @@ public class PipeManager {
     private static final int PIPE_SPACING = 220;
     private static final int PIPE_COUNT = 3;
 
-    private final List<Pipe> pipes = new ArrayList<>();
+    private final List<Pipe> pipes;
     private final Random rand = new Random();
 
     public PipeManager() {
+        // Initialize pipes separately to avoid constructor call issues
+        pipes = new ArrayList<>();
         reset();
     }
 
@@ -33,7 +35,10 @@ public class PipeManager {
     }
 
     private Pipe createRandomPipeAt(int x) {
-        int topHeight = rand.nextInt(200) + 100;
+        // Ensure top pipe leaves enough room for bottom pipe
+        int maxTopHeight = Constants.HEIGHT - GAP - 100; // Leave room for bottom pipe
+        int minTopHeight = 50;
+        int topHeight = rand.nextInt(maxTopHeight - minTopHeight) + minTopHeight;
         return new Pipe(x, PIPE_WIDTH, GAP, topHeight);
     }
 

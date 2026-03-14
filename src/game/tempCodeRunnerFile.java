@@ -1,1 +1,0 @@
-cd C:\Users\Admin\Desktop\JAVAPROJECT\src
