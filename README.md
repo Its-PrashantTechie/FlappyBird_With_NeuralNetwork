@@ -25,11 +25,15 @@ A classic Flappy Bird clone written entirely in Java using AWT and Swing, featur
 
 ## How to Run
 
-### Using the Batch Script (Windows)
-Just double-click the `run.bat` file from the main directory or run it in your terminal:
-```bash
-.\run.bat
-```
+### Using the Pre-built Executable (Easiest)
+1. Go to the **Releases** tab on the right side of this GitHub repository.
+2. Download the `FlappyBirdAI.jar` file.
+3. Simply double-click it to play! (Ensure you have Java installed).
+
+### Using the Batch Scripts (Windows)
+If you have cloned the repository, you can run or build the game yourself:
+- To run the game directly: `.\run.bat`
+- To build your own executable JAR: `.\build.bat`
 
 ### Manually via JDK
 You can compile and run it straight from `src`:
